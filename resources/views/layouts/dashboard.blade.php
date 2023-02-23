@@ -17,6 +17,12 @@
   <script src="{{ asset('./js/jquery-3.5.1.js') }}"></script>
   <script src="{{ asset('./js/sidebars.js') }}"></script>
 
+  <!-- datatables -->
+  <script src="{{ asset('./dataTables/datatables.js') }}"></script>
+  <link rel="stylesheet" href="{{ asset('./dataTables/datatables.min.css') }}" />
+  <link rel="stylesheet" href="{{ asset('./dataTables/datatables.css') }}" />
+  <script src="{{ asset('./dataTables/datatables.min.js') }}"></script>
+
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -107,7 +113,9 @@
       </div>
     </div>
 
-    <div class="container" id="main">
+    <x-message-dialog />
+
+    <div class="container" id="main" style="overflow-x: scroll;">
 
       @if(request()->path() === 'dashboard')
       <div class=" p-5">
@@ -164,7 +172,7 @@
     </div>
   </main>
 
-  <x-message-dialog />
+
 </body>
 <script>
   function messageBox(msg) {
@@ -174,10 +182,14 @@
   $(document).ready(function() {
 
     $('#btn-logout').click(function() {
+      $('#msgBox-delete-subj').css('display', 'none')
+      $('#msgBox-btn-confirm').css('display', 'block')
       messageBox('Are you sure you want to logout now?')
     })
 
     $('#msgBox-btn-cancel').click(() => $('#msgBox').modal('hide'))
+
+
     $('#msgBox-btn-confirm').click(function() {
 
       $.ajax({
@@ -194,6 +206,7 @@
         }
       })
     })
+
   })
 </script>
 

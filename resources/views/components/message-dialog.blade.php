@@ -13,8 +13,12 @@
             </div>
             <div class="bg-light p-2">
                 <div class="d-flex float-end">
+                    <!-- logout -->
                     <button class="btn btn-default btn-sm m-2" id="msgBox-btn-cancel">Cancel</button>
                     <button class="btn btn-primary btn-sm m-2" id="msgBox-btn-confirm">Confirm</button>
+
+                    <!-- delete subject -->
+                    <button class="btn btn-primary btn-sm m-2" id="msgBox-delete-subj" style="display: none;">Confirm</button>
                 </div>
             </div>
         </div>

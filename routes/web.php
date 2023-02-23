@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboardcontroller;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\Usercontroller;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,11 @@ Route::controller(Dashboardcontroller::class)->group(function () {
 
     Route::get('data-management', 'dataManagement')->name('data.management');
     Route::get('data-management/subjects', 'subjectManage')->name('subject.manage');
+});
+
+Route::controller(SubjectController::class)->group(function () {
+    Route::post('subject/add', 'store')->name('subject.store');
+    Route::post('subject/update/{id}', 'update')->name('subject.update');
+    Route::get('subject/get', 'get')->name('subject.get');
+    Route::get('subject/destroy/{id}', 'destroy')->name('subject.destroy');
 });
