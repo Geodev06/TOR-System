@@ -1,29 +1,15 @@
 @extends('layouts.dashboard')
 
 @section('manage_subject')
-<style>
-    #table-subjects tbody tr td {
-        padding: 10px;
-        font-size: 13px;
-    }
+<!-- datatables -->
+<script src="{{ asset('./dataTables/datatables.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('./dataTables/datatables.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('./dataTables/datatables.css') }}" />
+<script src="{{ asset('./dataTables/datatables.min.js') }}"></script>
 
-    table.dataTable tbody tr:hover {
-        transition: all .3s;
-        cursor: pointer;
-        background-color: #560b65;
-        color: white;
-    }
+<link rel="stylesheet" href="{{ asset('./css/table.css')}}">
 
-    table.dataTable thead tr th {
-        font-size: 20px;
-        cursor: pointer;
-        padding: 8px;
-    }
 
-    .f-12 {
-        font-size: 12px;
-    }
-</style>
 <div class="p-5">
 
     <div class="d-flex justify-content-between">
@@ -61,7 +47,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <div class="modal-body">
+            <div class="modal-body p-5">
                 <h4 class="mb-3">Add subject</h4>
                 <form action="" id="subjForm">
                     @csrf
@@ -92,7 +78,7 @@
                     </div>
                     <div class="d-flex float-end">
                         <button type="button" class="btn btn-default btn-sm m-2" onclick="closeModal()">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm m-2">Confirm</button>
+                        <button type="submit" class="btn btn-primary btn-sm m-2"><i class="bx bx-save"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -108,7 +94,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <div class="modal-body">
+            <div class="modal-body p-5">
                 <h4 class="mb-3">Edit subject</h4>
                 <form action="" id="editsubjForm">
                     @csrf
@@ -139,7 +125,7 @@
                     </div>
                     <div class="d-flex float-end">
                         <button type="button" class="btn btn-default btn-sm m-2" onclick="closeeditModal()">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm m-2">Confirm</button>
+                        <button type="submit" class="btn btn-primary btn-sm m-2"><i class="bx bx-save"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -332,6 +318,11 @@
                     closeeditModal()
                     $('#editsubjForm')[0].reset()
                     loadSubjects()
+                }
+
+                if (data.status === 500) {
+                    $('.error_edit_code').text('code already existing.');
+                    $("input[name='edit_code']").addClass('is-invalid')
                 }
             },
             error: function() {

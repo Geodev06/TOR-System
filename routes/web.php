@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboardcontroller;
+use App\Http\Controllers\StudentinfoController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\Usercontroller;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,9 @@ Route::controller(SubjectController::class)->group(function () {
     Route::post('subject/update/{id}', 'update')->name('subject.update');
     Route::get('subject/get', 'get')->name('subject.get');
     Route::get('subject/destroy/{id}', 'destroy')->name('subject.destroy');
+});
+
+Route::controller(StudentinfoController::class)->group(function () {
+    Route::get('student', 'index')->name('student.get');
+    Route::post('student/add', 'store')->name('studentinfo.store');
 });

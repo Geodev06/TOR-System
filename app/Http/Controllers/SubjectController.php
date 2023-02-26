@@ -16,11 +16,13 @@ class SubjectController extends Controller
 
     public function store(Request $request)
     {
+        //regex:/^[a-zA-Z ]+$/u
+
         $validator = Validator::make(
             $request->all(),
             [
                 'code' => 'required|unique:subjects',
-                'description' => 'required|regex:/^[a-zA-Z ]+$/u',
+                'description' => 'required',
                 'unit' => 'required|integer|min:1',
             ],
             [
@@ -55,7 +57,7 @@ class SubjectController extends Controller
             $request->all(),
             [
                 'edit_code' => 'required',
-                'edit_description' => 'required|regex:/^[a-zA-Z ]+$/u',
+                'edit_description' => 'required',
                 'edit_unit' => 'required|integer|min:1',
             ],
             [
@@ -69,13 +71,17 @@ class SubjectController extends Controller
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
 
-        Subject::where('id', $id)->update([
-            'code' => strtoupper($request->edit_code),
-            'description' => strtoupper($request->edit_description),
-            'unit' => $request->edit_unit
-        ]);
+        try {
+            Subject::where('id', $id)->update([
+                'code' => strtoupper($request->edit_code),
+                'description' => strtoupper($request->edit_description),
+                'unit' => $request->edit_unit
+            ]);
 
-        return response()->json(['status' => 200, 'msg' => 'Subject has been updated.']);
+            return response()->json(['status' => 200, 'msg' => 'Subject has been updated.']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 500, 'msg' => $th]);
+        }
     }
 
     public function destroy($id)

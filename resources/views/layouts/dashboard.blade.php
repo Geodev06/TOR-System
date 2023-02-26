@@ -17,11 +17,7 @@
   <script src="{{ asset('./js/jquery-3.5.1.js') }}"></script>
   <script src="{{ asset('./js/sidebars.js') }}"></script>
 
-  <!-- datatables -->
-  <script src="{{ asset('./dataTables/datatables.js') }}"></script>
-  <link rel="stylesheet" href="{{ asset('./dataTables/datatables.min.css') }}" />
-  <link rel="stylesheet" href="{{ asset('./dataTables/datatables.css') }}" />
-  <script src="{{ asset('./dataTables/datatables.min.js') }}"></script>
+
 
   <style>
     .bd-placeholder-img {
@@ -165,6 +161,7 @@
       @endif
 
       @if(request()->path() === 'data-management/subjects')
+
       @yield('manage_subject')
       @endif
 
