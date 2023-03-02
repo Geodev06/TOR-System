@@ -2,11 +2,9 @@
 
 @section('manage_subject')
 <!-- datatables -->
-<script src="{{ asset('./dataTables/datatables.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('./dataTables/datatables.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('./dataTables/datatables.css') }}" />
-<script src="{{ asset('./dataTables/datatables.min.js') }}"></script>
-
+<link rel="stylesheet" href="{{ asset('./dataTables/dataTables.bootsrap5.min.css')}}">
+<script src="{{ asset('./dataTables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('./dataTables/dataTables.bootstrap5.min.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('./css/table.css')}}">
 
 

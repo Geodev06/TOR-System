@@ -10,8 +10,8 @@ class Studentinfo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'lrn', 'firstname', 'lastname', 'birthdate',
-        'sex', 'province', 'town', 'guardian', 'guardian_address',
-        'elem_school', 'elem_school_year', 'elem_years', 'gen_ave'
+        'lrn', 'firstname', 'lastname', 'name_ext', 'birthdate',
+        'sex',
+        'elem_school', 'elem_school_citation', 'elem_school_id', 'elem_school_address', 'gen_ave'
     ];
 }
