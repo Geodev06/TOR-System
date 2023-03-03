@@ -15,7 +15,7 @@ class Dashboardcontroller extends Controller
 
     public function index()
     {
-        return view('layouts.dashboard');
+        return view('partials.dashboard_content');
     }
 
     public function dataManagement()

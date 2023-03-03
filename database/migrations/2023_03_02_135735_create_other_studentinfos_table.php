@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('other_studentinfos', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('lrn')->unique();
+            $table->string('lrn')->unique()->reference('lrn')->on('studentinfos');
             $table->string('pept_rating')->nullable()->default('');
             $table->string('pept_date_assestment')->nullable()->default('');
             $table->string('als_rating')->nullable()->default('');

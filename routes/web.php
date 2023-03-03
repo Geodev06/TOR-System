@@ -44,5 +44,9 @@ Route::controller(SubjectController::class)->group(function () {
 
 Route::controller(StudentinfoController::class)->group(function () {
     Route::get('student', 'index')->name('student.get');
+    Route::get('data-management/student/{lrn}/edit', 'edit')->name('student.edit');
     Route::post('student/add', 'store')->name('studentinfo.store');
+    Route::post('student/update/{id}', 'update')->name('studentinfo.update');
+    Route::post('student/other-info/add/{lrn}', 'store_other')->name('otherinfo.store');
+    Route::get('student/other-info/destroy/{lrn}', 'destroy')->name('studentinfo.destroy');
 });

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('manage_subject')
+@section('content')
 <!-- datatables -->
 <link rel="stylesheet" href="{{ asset('./dataTables/dataTables.bootsrap5.min.css')}}">
 <script src="{{ asset('./dataTables/jquery.dataTables.min.js') }}"></script>
@@ -179,7 +179,7 @@
                 table.clear().draw()
                 for (let i = 0; i < data.length; i++) {
                     var span = '<div class="d-flex flex-column"><span class="fw-bold">' + data[i].code + '</span><span class="f-12">' + data[i].description + '</span></div>'
-                    var btn_action = '<span id="btn-edit" data-id="' + data[i].id + '" data-code="' + data[i].code + '" data-desc="' + data[i].description + '" data-unit="' + data[i].unit + '" class="btn-edit text-info bx bx-edit fs-4"></span> <span data-id="' + data[i].id + '" class="btn-delete bx bx-trash text-danger fs-4"></span>'
+                    var btn_action = '<span id="btn-edit" data-id="' + data[i].id + '" data-code="' + data[i].code + '" data-desc="' + data[i].description + '" data-unit="' + data[i].unit + '" class="btn-edit text-success bx bx-edit fs-4"></span> <span data-id="' + data[i].id + '" class="btn-delete bx bx-trash text-danger fs-4"></span>'
                     table.row.add([span, data[i].unit, data[i].date, btn_action]).draw()
                 }
             },
@@ -248,7 +248,7 @@
         $('#msgBox-delete-subj').click(function() {
 
             var route = "{{ route('subject.destroy',':id') }}"
-            //delete subj
+
             $.ajax({
                 url: route.replace(':id', $(this)[0].dataset.id),
                 type: 'get',
@@ -261,7 +261,7 @@
                         loadSubjects()
                     }
                 },
-                error: function() {
+                error: function(err) {
                     showErrorAlert('Connection to server error.')
                 }
             })

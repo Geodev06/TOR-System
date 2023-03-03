@@ -14,4 +14,20 @@ class Studentinfo extends Model
         'sex',
         'elem_school', 'elem_school_citation', 'elem_school_id', 'elem_school_address', 'gen_ave'
     ];
+
+    public function otherinfo()
+    {
+        return $this->hasOne(OtherStudentinfo::class, 'lrn', 'lrn');
+    }
+
+    public static function boot()
+    {
+        # code...
+        parent::boot();
+        self::deleting(function ($studentinfo) {
+            $studentinfo->otherinfo()->each(function ($info) {
+                $info->delete();
+            });
+        });
+    }
 }

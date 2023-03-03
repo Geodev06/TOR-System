@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('data-management')
+@section('content')
 <!-- datatables -->
 <link rel="stylesheet" href="{{ asset('./dataTables/dataTables.bootsrap5.min.css')}}">
 <script src="{{ asset('./dataTables/jquery.dataTables.min.js') }}"></script>
@@ -53,7 +53,7 @@
                 <form action="" id="studentForm">
                     @csrf
                     <div class="row">
-                        <p>Learner's information</p>
+                        <p style="margin-top: 0; font-size:13px" class="text-muted">Learner's information</p>
                         <div class="col-lg-3">
 
                             <div class="form-floating mb-3">
@@ -115,9 +115,6 @@
                                 <span class="error_lrn text-danger error-text"></span>
                             </div>
                         </div>
-
-                        <hr>
-                        <p>Eligibility for JHS Enrollment</p>
                         <div class="col-lg-8">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" autocomplete="off" name="elem_school" placeholder="Graduated elementary school" />
@@ -158,49 +155,6 @@
                             </div>
                         </div>
 
-                        <!-- <hr>
-                        <p>Ohers (optional)</p>
-
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" autocomplete="off" name="pept_rating" placeholder="pept rating" />
-                                <label for="">PEPT (rating).</label>
-                                <span class="error_pept_rating text-danger error-text"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="date" class="form-control" autocomplete="off" name="pept_date_assestment" />
-                                <label for="">PEPT date of assessment.</label>
-                                <span class="error_pept_date_assestment text-danger error-text"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" autocomplete="off" name="als_rating" placeholder="als rating" />
-                                <label for="">ALS A/E (rating).</label>
-                                <span class="error_als_rating text-danger error-text"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" autocomplete="off" name="als_name_address" placeholder="als address/name" />
-                                <label for="">ALS A/E Center name and address.</label>
-                                <span class="error_als_name_address text-danger error-text"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" autocomplete="off" name="others" placeholder="others" />
-                                <label for="">Others</label>
-                                <span class="error_others text-danger error-text"></span>
-                            </div>
-                        </div> -->
-
                     </div>
                     <div class="d-flex float-end">
                         <button type="button" class="btn btn-default btn-sm m-2" id="btn-close">Cancel</button>
@@ -217,7 +171,7 @@
 
 <x-message-alert />
 <script>
-    function loadSubjects() {
+    function loadData() {
         var table = $('#table-students').DataTable({
             destroy: true,
             processing: true,
@@ -251,7 +205,7 @@
         })
     }
 
-    loadSubjects()
+    loadData()
 
     function showAlert(msg) {
         $('#msgAlert').modal('show')
@@ -283,7 +237,6 @@
             },
             success: (data) => {
 
-                console.log(data)
                 $('#studentForm :input').prop("disabled", false)
 
                 if (data.status === 0) {
@@ -299,19 +252,55 @@
                     $('#studentForm')[0].reset()
                     $('#addStudentModal').modal('hide')
                     showAlert(data.msg)
-                    loadSubjects()
+                    loadData()
                 }
             },
             error: (err) => {
-                console.log(err)
-                showErrorAlert(err)
+                showErrorAlert('Connection to server error.')
             }
         })
     })
 
     $('#table-students tbody').on('click', 'tr .btn-edit', function(e) {
-        console.log($(this)[0].dataset.id)
+
+        var route = "{{ route('student.edit',':lrn') }}"
+        window.location.href = route.replace(':lrn', $(this)[0].dataset.id)
+
     })
+
+    $('#table-students tbody').on('click', 'tr .btn-delete', function(e) {
+
+        $('#msgBox').modal('show')
+        $('#msg-box-text').text('Are you sure you want to delete all of the records of learner - ' + $(this)[0].dataset.id)
+        $('#msgBox-delete-student-info').css('display', 'block')
+        $('#msgBox-delete-student-info').attr('data-id', $(this)[0].dataset.id)
+
+        $('#msgBox-btn-confirm').css('display', 'none')
+
+    })
+
+    $('#msgBox-delete-student-info').click(function() {
+
+        var route = "{{ route('studentinfo.destroy',':lrn') }}"
+        $.ajax({
+            url: route.replace(':lrn', $(this)[0].dataset.id),
+            type: 'get',
+            data: $(this).serialize(),
+            dataType: 'json',
+            beforeSend: () => {},
+            success: (data) => {
+                if (data.status === 200) {
+                    $('#msgBox').modal('hide')
+                    showAlert(data.msg)
+                    loadData()
+                }
+            },
+            error: (err) => {
+                showErrorAlert('Connection to server error.')
+            }
+        })
+    })
+
     $('#btn-add-student').click(() => $('#addStudentModal').modal('show'))
     $('#btn-close').click(() => $('#addStudentModal').modal('hide'))
 </script>
