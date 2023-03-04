@@ -4,7 +4,6 @@
 /public/hot
 /public/storage
 /public/bs
-/public/dataTables
 /storage/*.key
 /vendor
 .env

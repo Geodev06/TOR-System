@@ -9,7 +9,7 @@
     </div>
     <span></span>
 </div>
-
+<a href="{{ route('record.show',$student[0]->lrn) }}" class="btn btn-primary text-white btn-sm mb-2" type="button"><i class="bx bxs-file-plus"></i>View Records</a>
 <div class="container">
     <div class="row">
         <div class="col-lg-12 mb-2 card card-body">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboardcontroller;
+use App\Http\Controllers\RecordController;
 use App\Http\Controllers\StudentinfoController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\Usercontroller;
@@ -50,3 +51,5 @@ Route::controller(StudentinfoController::class)->group(function () {
     Route::post('student/other-info/add/{lrn}', 'store_other')->name('otherinfo.store');
     Route::get('student/other-info/destroy/{lrn}', 'destroy')->name('studentinfo.destroy');
 });
+
+Route::resource('data-management/record', RecordController::class)->middleware('auth');

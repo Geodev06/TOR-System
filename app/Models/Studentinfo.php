@@ -20,6 +20,11 @@ class Studentinfo extends Model
         return $this->hasOne(OtherStudentinfo::class, 'lrn', 'lrn');
     }
 
+    public function student_record()
+    {
+        return $this->hasMany(Record::class, 'lrn', 'lrn');
+    }
+
     public static function boot()
     {
         # code...
