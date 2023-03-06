@@ -18,7 +18,7 @@
 
 <!-- modal -->
 <div class="modal fade" id="addRecordModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addRecord" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-body p2">
                 <div class="d-flex justify-content-between">
@@ -119,7 +119,14 @@
                                 <hr>
 
                                 <div class="col-lg-12">
-                                    <button class="btn btn-primary mb-2 btn-sm" type="button" id="btn-add-row"><i class="bx bx-plus-circle"></i> Add row</button>
+                                    <div class="d-flex align-items-baseline bg-light p-2">
+                                        <button class="btn btn-primary mb-2 btn-sm" type="button" id="btn-add-row"><i class="bx bx-plus-circle"></i> Add row</button>
+                                        <div class="form-check mx-2 form-switch">
+                                            <input type="checkbox" class="form-check-input" id="useDefault" role="switch">
+                                            <label for="useDefault" class="form-check-label" style="font-size: 12px;">(use default subjects)</label>
+                                        </div>
+                                    </div>
+                                    <p class="text-danger f-12" id="grade_error"></p>
                                     <table class="table" id="table-record">
                                         <thead>
                                             <tr>
@@ -143,12 +150,50 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <div class="col-lg-12">
+                                    <button class="btn btn-danger mb-2 btn-sm" type="button" id="btn-add-row-remedial"><i class="bx bx-plus-circle"></i> Add row</button>
+                                    <p>Remediation classes</p>
+                                    <div class="row ">
+                                        <div class="col-lg-3">
+                                            <div class="form-floating mb-3">
+                                                <input type="date" class="form-control" autocomplete="off" name="remedial_date_from" />
+                                                <label for="">Conducted from.</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-floating mb-3">
+                                                <input type="date" class="form-control" autocomplete="off" name="remedial_date_to" />
+                                                <label for="">To.</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table" id="table-remedial">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-25"><span style="font-size:12px ;">Remedial classes</span><br><span>(Learning Areas)</span></th>
+                                                <th>Final rating</th>
+                                                <th>Remedial class mark</th>
+                                                <th>Recomputed final grade</th>
+                                                <th class="w-25">Remarks</th>
+                                                <th></th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
 
 
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm float-end" id="btn-save-record" disabled><i class="bx bx-save"></i>Save</button>
+                    <button type="button" class="btn btn-sm btn-danger float-end mx-2" onclick="$('#addRecordModal').modal('hide')">Cancel</button>
                 </form>
             </div>
 
@@ -191,6 +236,7 @@
                     $(this).removeClass('is-invalid')
                 })
                 $('.error-text').text('')
+                $('#grade_error').text('')
                 $('#recordForm :input').prop("disabled", true)
             },
             success: (data) => {
@@ -207,8 +253,13 @@
                     })
                 }
 
-                if (data.status === 200) {
+                if (data.status === 500) {
+                    $('#grade_error').text(data.error)
+                }
 
+                if (data.status === 200) {
+                    $('#recordForm')[0].reset()
+                    $('#table-record tbody').html('')
                     $('#addRecordModal').modal('hide')
                     showAlert(data.msg)
 
@@ -233,11 +284,11 @@
                                                     </select>
                                                     <span class="error_select[] text-danger error-text">
                                                 </td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"><span class="error_quarter_1[] text-danger error-text"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"><span class="error_quarter_2[] text-danger error-text"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"><span class="error_quarter_3[] text-danger error-text"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"><span class="error_quarter_4[] text-danger error-text"></td>
-                                                <td></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
                                                 <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
                                         </tr>`)
 
@@ -247,12 +298,151 @@
         }
     })
 
+    $('#btn-add-row-remedial').click(function() {
+        $('#table-remedial tbody').append(`
+        <tr>
+            <td><input type="text" class="form-control" name="remedials[]"></td>
+             <td><input type="text" class="form-control" name="remedials_rating[]"></td>
+              <td><input type="text" class="form-control" name="remedials_class_mark[]"></td>
+               <td><input type="text" class="form-control" name="remedial_final_grades[]"></td>
+                <td><input type="text" class="form-control" name="remedials_remarks[]"></td>
+                  <td><i class="bx bx-x-circle text-danger btn-remove-row-remedial" style="cursor:pointer"></i></td>
+        </tr>`)
+
+
+
+    })
+
     $('#table-record').on('click', '.btn-remove-row', function(e) {
 
         if ($('#table-record tbody tr').length - 1 <= 0) {
             $('#btn-save-record').attr('disabled', 'disabled')
         }
         $(this).closest('tr').remove()
+
+    })
+
+    $('#table-remedial').on('click', '.btn-remove-row-remedial', function(e) {
+        $(this).closest('tr').remove()
+
+    })
+
+    $('#useDefault').on('click', function(e) {
+
+        if ($(this).prop('checked')) {
+            $('#table-record tbody').html('')
+            $('#table-record tbody').append(`<tr><td><input type="text" value="FILIPINO" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" value="ENGLISH" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" value="MATHEMATICS" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="SCIENCE" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="ARALING PANLIPUNAN (AP)" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="EDUKASYON SA PAGPAPAKATAO (ESP)" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="TECHNOLOGY AND LIVELIHOOD EDUCATION (TLE)" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                            <td>
+                                            <span class="mx-2 fw-bold">M.A.P.E.H</span>
+                                            </td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="MUSIC" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="ARTS" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="PHYSICAL EDUCATION" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>
+                                             <tr>
+                                                <td><input type="text" value="HEALTH" class="form-control" name="select[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
+                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
+                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
+                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
+                                            </tr>`)
+        } else {
+            $('#table-record tbody').html('')
+        }
+
+        if ($('#table-record tbody tr').length > 0) {
+            $('#btn-save-record').removeAttr('disabled')
+        } else {
+            $('#btn-save-record').attr('disabled', 'disabled')
+        }
 
     })
 </script>

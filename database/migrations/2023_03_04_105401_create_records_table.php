@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('school_year');
             $table->string('adviser');
             $table->json('data')->nullable();
+            $table->string('remedial_date_from')->nullable();
+            $table->string('remedial_date_to')->nullable();
+            $table->json('remedials')->nullable();
             $table->timestamps();
         });
     }

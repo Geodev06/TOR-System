@@ -68,19 +68,48 @@ class RecordController extends Controller
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
 
+        $grade_validator = Validator::make(
+            $request->all(),
+            [
+                'select.*' => 'required',
+                'quarter_1.*' => 'required|numeric|min:0|max:100',
+                'quarter_2.*' => 'required|numeric|min:0|max:100',
+                'quarter_3.*' => 'required|numeric|min:0|max:100',
+                'quarter_4.*' => 'required|numeric|min:0|max:100',
+            ],
+            [
+                'select.required' => 'this field is required',
+                'quarter_1.required.*' => 'this field is required',
+                'quarter_2.required.*' => 'this field is required',
+                'quarter_3.required.*' => 'this field is required',
+                'quarter_4.required.*' => 'this field is required',
+            ]
+        );
+        if (!$grade_validator->passes()) {
+
+            return response()->json(['status' => 500, 'error' => 'Learning areas is required and Quarter rating must be in numeric values.(max 100.00)']);
+        }
+
         $learning_areas = [];
 
-        foreach ($request->select as $subjects) {
+        $gen_ave = 0;
+        for ($i = 0; $i < count($request->select); $i++) {
 
+            $final_rating = 0;
+            $final_rating = ($request->quarter_1[$i] + $request->quarter_2[$i] + $request->quarter_3[$i] + $request->quarter_4[$i]) / 4;
+            $gen_ave += $final_rating;
             array_push($learning_areas, [
-                $subjects => [
-                    'quarter_1' => $request->quarter_1[0],
-                    'quarter_2' => $request->quarter_2[0],
-                    'quarter_3' => $request->quarter_3[0],
-                    'quarter_4' => $request->quarter_4[0]
+                $request->select[$i] => [
+                    'quarter_1' => $request->quarter_1[$i],
+                    'quarter_2' => $request->quarter_2[$i],
+                    'quarter_3' => $request->quarter_3[$i],
+                    'quarter_4' => $request->quarter_4[$i],
+                    'final' => $final_rating,
+                    'gen_ave' => ($gen_ave / count($request->select))
                 ]
             ]);
         }
+
         $data = [
             'lrn' => $request->lrn,
             'school' => $request->school,
