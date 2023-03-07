@@ -45,11 +45,19 @@ Route::controller(SubjectController::class)->group(function () {
 
 Route::controller(StudentinfoController::class)->group(function () {
     Route::get('student', 'index')->name('student.get');
-    Route::get('data-management/student/{lrn}/edit', 'edit')->name('student.edit');
+    Route::get('data-management/student/{lrn}/edit-info', 'edit')->name('student.edit');
     Route::post('student/add', 'store')->name('studentinfo.store');
     Route::post('student/update/{id}', 'update')->name('studentinfo.update');
     Route::post('student/other-info/add/{lrn}', 'store_other')->name('otherinfo.store');
     Route::get('student/other-info/destroy/{lrn}', 'destroy')->name('studentinfo.destroy');
 });
 
-Route::resource('data-management/record', RecordController::class)->middleware('auth');
+Route::controller(RecordController::class)
+    ->prefix('data-management')
+    ->middleware(['auth'])->group(function () {
+        Route::get('student/{lrn}/academics', 'show')->name('record.show');
+        Route::post('student/store/academic-record', 'store')->name('record.store');
+        Route::get('student/record-list/{lrn}', 'index')->name('academic_record.show');
+    });
+
+// Route::resource('data-management/record', RecordController::class)->middleware('auth');

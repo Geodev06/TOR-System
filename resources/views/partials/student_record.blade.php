@@ -13,7 +13,12 @@
         <h6 class="text-muted ">Data management / Student record / <span class="badge bg-info text-white">{{ $student[0]->lrn }}</span></h6>
         <span class="bx bx-arrow-back fs-5 text-primary" style="cursor: pointer;" onclick="history.back()"></span>
     </div>
-    <button class="btn btn-success w-auto btn-sm" id="btn-add-record"> <span class="bx bx-plus"></span> Add student record</button>
+    <button class="btn btn-success w-auto btn-sm" id="btn-add-record"> <span class="bx bx-plus"></span> Add academic record</button>
+</div>
+<div class="container">
+    <div class="row" id="academic-content">
+
+    </div>
 </div>
 
 <!-- modal -->
@@ -36,7 +41,7 @@
                                 <input type="hidden" name="lrn" value="{{$student[0]->lrn}}">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" autocomplete="off" placeholder="School" name="school" value="{{ $student[0]->student_record()->school ?? '' }}" />
+                                        <input type="text" class="form-control text-uppercase" autocomplete="off" placeholder="School" name="school" value="{{ $student[0]->student_record()->school ?? '' }}" />
                                         <label for="">School name</label>
                                         <span class="error_school text-danger error-text"></span>
                                     </div>
@@ -44,7 +49,7 @@
 
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" autocomplete="off" placeholder="School id" name="school_id" value="{{ $student[0]->student_record()->school_id ?? '' }}" />
+                                        <input type="text" class="form-control text-uppercase" autocomplete="off" placeholder="School id" name="school_id" value="{{ $student[0]->student_record()->school_id ?? '' }}" />
                                         <label for="">School id</label>
                                         <span class="error_school_id text-danger error-text"></span>
                                     </div>
@@ -52,7 +57,7 @@
 
                                 <div class="col-lg-2">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" autocomplete="off" placeholder="District" name="district" value="{{ $student[0]->student_record()->school_district ?? '' }}" />
+                                        <input type="text" class="form-control text-uppercase" autocomplete="off" placeholder="District" name="district" value="{{ $student[0]->student_record()->school_district ?? '' }}" />
                                         <label for="">District</label>
                                         <span class="error_district text-danger error-text"></span>
                                     </div>
@@ -60,7 +65,7 @@
 
                                 <div class="col-lg-2">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" autocomplete="off" placeholder="Division" name="division" value="{{ $student[0]->student_record()->division ?? '' }}" />
+                                        <input type="text" class="form-control text-uppercase" autocomplete="off" placeholder="Division" name="division" value="{{ $student[0]->student_record()->division ?? '' }}" />
                                         <label for="">Division</label>
                                         <span class="error_division text-danger error-text"></span>
                                     </div>
@@ -68,7 +73,7 @@
 
                                 <div class="col-lg-2">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" autocomplete="off" placeholder="Region" name="region" value="{{ $student[0]->student_record()->region ?? '' }}" />
+                                        <input type="text" class="form-control text-uppercase" autocomplete="off" placeholder="Region" name="region" value="{{ $student[0]->student_record()->region ?? '' }}" />
                                         <label for="">Region</label>
                                         <span class="error_region text-danger error-text"></span>
                                     </div>
@@ -93,7 +98,7 @@
 
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" autocomplete="off" placeholder="Section" name="section" value="{{ $student[0]->student_record()->section ?? '' }}" />
+                                        <input type="text" class="form-control text-uppercase" autocomplete="off" placeholder="Section" name="section" value="{{ $student[0]->student_record()->section ?? '' }}" />
                                         <label for="">Section</label>
                                         <span class="error_section text-danger error-text"></span>
                                     </div>
@@ -111,7 +116,7 @@
 
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" autocomplete="off" placeholder="Adviser" name="adviser" value="{{ $student[0]->student_record()->adviser ?? '' }}" />
+                                        <input type="text" class="form-control text-uppercase" autocomplete="off" placeholder="Adviser" name="adviser" value="{{ $student[0]->student_record()->adviser ?? '' }}" />
                                         <label for="">Adviser/Teacher name</label>
                                         <span class="error_adviser text-danger error-text"></span>
                                     </div>
@@ -150,7 +155,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <div class="col-lg-12">
                                     <button class="btn btn-danger mb-2 btn-sm" type="button" id="btn-add-row-remedial"><i class="bx bx-plus-circle"></i> Add row</button>
                                     <p>Remediation classes</p>
@@ -178,26 +182,18 @@
                                                 <th class="w-25">Remarks</th>
                                                 <th></th>
                                             </tr>
-
                                         </thead>
                                         <tbody>
-
-
                                         </tbody>
                                     </table>
                                 </div>
-
                             </div>
-
-
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm float-end" id="btn-save-record" disabled><i class="bx bx-save"></i>Save</button>
                     <button type="button" class="btn btn-sm btn-danger float-end mx-2" onclick="$('#addRecordModal').modal('hide')">Cancel</button>
                 </form>
             </div>
-
-
         </div>
     </div>
 </div>
@@ -220,6 +216,24 @@
 
     for (let i = 1900; i < 2050; i++) {
         $('#school-year').append('<option value="' + i + '-' + (i + 1) + '">' + i + '-' + (i + 1) + '</option>')
+    }
+
+    function loadAcademicRecords() {
+
+        $.ajax({
+            url: "{{ route('academic_record.show', $student[0]->lrn) }}",
+            type: 'get',
+            dataType: 'json',
+            beforeSend: () => {
+                $('#academic-content').html('')
+            },
+            success: (data) => {
+                $('#academic-content').html(data)
+            },
+            error: (err) => {
+
+            }
+        });
     }
 
     $('#recordForm').on('submit', function(e) {
@@ -258,8 +272,10 @@
                 }
 
                 if (data.status === 200) {
+                    loadAcademicRecords()
                     $('#recordForm')[0].reset()
                     $('#table-record tbody').html('')
+                    $('#table-remedial tbody').html('')
                     $('#addRecordModal').modal('hide')
                     showAlert(data.msg)
 
@@ -276,174 +292,31 @@
     })
 
     $('#btn-add-row').click(function() {
-        $('#table-record tbody').append(`<tr>   <td><select name="select[]" id="" class="form-select">
-                                                        <option value="">Choose one</option>
-                                                        @foreach($subjects as $subject)
-                                                        <option value="{{ $subject->description }} ">{{ $subject->description }} </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error_select[] text-danger error-text">
-                                                </td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                        </tr>`)
-
-
-        if ($('#table-record tbody tr').length > 0) {
-            $('#btn-save-record').removeAttr('disabled')
-        }
-    })
-
-    $('#btn-add-row-remedial').click(function() {
-        $('#table-remedial tbody').append(`
-        <tr>
-            <td><input type="text" class="form-control" name="remedials[]"></td>
-             <td><input type="text" class="form-control" name="remedials_rating[]"></td>
-              <td><input type="text" class="form-control" name="remedials_class_mark[]"></td>
-               <td><input type="text" class="form-control" name="remedial_final_grades[]"></td>
-                <td><input type="text" class="form-control" name="remedials_remarks[]"></td>
-                  <td><i class="bx bx-x-circle text-danger btn-remove-row-remedial" style="cursor:pointer"></i></td>
+        $('#table-record tbody').append(`<tr>
+        <td><select name="select[]" id="" class="form-select">
+        <option value="">Choose one</option>
+        @foreach($subjects as $subject)
+        <option value="{{ $subject->description }} ">{{ $subject->description }} </option>
+        @endforeach
+        </select>
+        </td>
+        <td><input type="text" class="form-control text-uppercase" name="quarter_1[]"></td>
+        <td><input type="text" class="form-control text-uppercase" name="quarter_2[]"></td>
+        <td><input type="text" class="form-control text-uppercase" name="quarter_3[]"></td>
+        <td><input type="text" class="form-control" name="quarter_4[]"></td>
+        <td><span class="badge bg-info text-white text-uppercase" style="font-size:10px">(auto-generated)</span></td>
+        <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
         </tr>`)
 
-
-
-    })
-
-    $('#table-record').on('click', '.btn-remove-row', function(e) {
-
-        if ($('#table-record tbody tr').length - 1 <= 0) {
-            $('#btn-save-record').attr('disabled', 'disabled')
-        }
-        $(this).closest('tr').remove()
-
-    })
-
-    $('#table-remedial').on('click', '.btn-remove-row-remedial', function(e) {
-        $(this).closest('tr').remove()
-
-    })
-
-    $('#useDefault').on('click', function(e) {
-
-        if ($(this).prop('checked')) {
-            $('#table-record tbody').html('')
-            $('#table-record tbody').append(`<tr><td><input type="text" value="FILIPINO" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="text" value="ENGLISH" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="text" value="MATHEMATICS" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="SCIENCE" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="ARALING PANLIPUNAN (AP)" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="EDUKASYON SA PAGPAPAKATAO (ESP)" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="TECHNOLOGY AND LIVELIHOOD EDUCATION (TLE)" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                            <td>
-                                            <span class="mx-2 fw-bold">M.A.P.E.H</span>
-                                            </td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="MUSIC" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="ARTS" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="PHYSICAL EDUCATION" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>
-                                             <tr>
-                                                <td><input type="text" value="HEALTH" class="form-control" name="select[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_1[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_2[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_3[]"></td>
-                                                <td><input type="text" class="form-control" name="quarter_4[]"></td>
-                                                <td><span class="badge bg-info text-white" style="font-size:10px">(auto-generated)</span></td>
-                                                <td><i class="bx bx-x-circle text-danger btn-remove-row" style="cursor:pointer"></i></td>
-                                            </tr>`)
-        } else {
-            $('#table-record tbody').html('')
-        }
-
         if ($('#table-record tbody tr').length > 0) {
             $('#btn-save-record').removeAttr('disabled')
-        } else {
-            $('#btn-save-record').attr('disabled', 'disabled')
         }
 
     })
+
+
+
+    loadAcademicRecords()
 </script>
+<script src="{{ asset('./js/partials/studentrecord.js') }}"></script>
 @endsection

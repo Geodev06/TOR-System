@@ -15,17 +15,20 @@ class RecordController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($lrn)
     {
-        //
-    }
+        $student = Studentinfo::where('lrn', $lrn)
+            ->with(['student_record' => function ($query) {
+                $query->orderBy('school_year');
+                $query->orderBy('classified_grade');
+            }])
+            ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // dd($student[0]->student_record[0]);
+        $list_view = view('partials.student_record_list', compact('student'))->render();
+
+        // dd($student[0]->student_record[0]->data);
+        return response()->json($list_view, 200);
     }
 
     /**
@@ -33,7 +36,6 @@ class RecordController extends Controller
      */
     public function store(Request $request)
     {
-
 
         $validator = Validator::make(
             $request->all(),
@@ -61,7 +63,6 @@ class RecordController extends Controller
                 'quarter_4.required' => 'this field is required',
             ]
         );
-
 
         if (!$validator->passes()) {
 
@@ -93,6 +94,7 @@ class RecordController extends Controller
         $learning_areas = [];
 
         $gen_ave = 0;
+
         for ($i = 0; $i < count($request->select); $i++) {
 
             $final_rating = 0;
@@ -105,9 +107,29 @@ class RecordController extends Controller
                     'quarter_3' => $request->quarter_3[$i],
                     'quarter_4' => $request->quarter_4[$i],
                     'final' => $final_rating,
-                    'gen_ave' => ($gen_ave / count($request->select))
+                    'remark' => $final_rating >= 75 ? 'PASSED' : 'FAILED'
                 ]
             ]);
+        }
+
+        $remedials = [];
+
+        if ($request->remedials != null) {
+            for ($i = 0; $i < count($request->remedials); $i++) {
+
+                if ($request->remedials[$i] != null) {
+                    array_push(
+                        $remedials,
+                        [
+                            'remedials' => $request->remedials[$i],
+                            'remedials_rating' => $request->remedials_rating[$i],
+                            'remedial_class_mark' => $request->remedials_class_mark[$i],
+                            'remedials_final_grade' => $request->remedials_final_grades[$i],
+                            'remedials_remarks' => $request->remedials_remarks[$i],
+                        ]
+                    );
+                }
+            }
         }
 
         $data = [
@@ -122,6 +144,10 @@ class RecordController extends Controller
             'school_year' => $request->school_year,
             'adviser' => $request->adviser,
             'data' => $learning_areas,
+            'remedial_date_from' => $request->remedial_date_from,
+            'remedial_date_to' => $request->remedial_date_to,
+            'remedials' => $remedials,
+            'gen_ave' => ($gen_ave) / count($request->select)
         ];
 
         Record::create($data);

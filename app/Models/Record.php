@@ -20,11 +20,25 @@ class Record extends Model
         'section',
         'school_year',
         'adviser',
-        'data'
+        'data',
+        'remedial_date_from',
+        'remedial_date_to',
+        'remedials',
+        'gen_ave'
 
     ];
 
+
+
     protected function data(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => json_decode($value, true),
+            set: fn ($value) => json_encode($value)
+        );
+    }
+
+    protected function remedials(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => json_decode($value, true),
