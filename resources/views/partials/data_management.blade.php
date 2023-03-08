@@ -273,8 +273,8 @@
         $('#msgBox').modal('show')
         $('#msg-box-text').text('Are you sure you want to delete all of the records of learner - ' + $(this)[0].dataset.id)
         $('#msgBox-delete-student-info').css('display', 'block')
+        $('#msgBox-delete-acads').css('display', 'none')
         $('#msgBox-delete-student-info').attr('data-id', $(this)[0].dataset.id)
-
         $('#msgBox-btn-confirm').css('display', 'none')
 
     })

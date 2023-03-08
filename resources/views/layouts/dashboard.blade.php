@@ -133,6 +133,7 @@
     $('#btn-logout').click(function() {
       $('#msgBox-delete-subj').css('display', 'none')
       $('#msgBox-delete-student-info').css('display', 'none')
+      $('#msgBox-delete-acads').css('display', 'none')
       $('#msgBox-btn-confirm').css('display', 'block')
       messageBox('Are you sure you want to logout now?')
     })

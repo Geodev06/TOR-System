@@ -56,8 +56,11 @@ Route::controller(RecordController::class)
     ->prefix('data-management')
     ->middleware(['auth'])->group(function () {
         Route::get('student/{lrn}/academics', 'show')->name('record.show');
+        Route::get('student/{lrn}/{id}/edit', 'edit')->name('record.edit');
         Route::post('student/store/academic-record', 'store')->name('record.store');
+        Route::post('student/update/academic-record/{id}', 'update')->name('record.update');
         Route::get('student/record-list/{lrn}', 'index')->name('academic_record.show');
+        Route::get('student/destroy/{id}', 'destroy')->name('record.destroy');
     });
 
 // Route::resource('data-management/record', RecordController::class)->middleware('auth');

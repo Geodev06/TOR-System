@@ -8,20 +8,20 @@
                 <div class="col-lg-12 mb-2">
                     <div class="card-body  p-3 d-flex justify-content-between">
                         <div class="d-flex flex-column">
-                            <h4>Releases</h4>
-                            <p style="font-size: 12px;">No of record released.</p>
+                            <h4>Students</h4>
+                            <p style="font-size: 12px;">Total no. of student records .</p>
                         </div>
-                        <h1 class="fw-bold text-secondary">100</h1>
+                        <h1 class="fw-bold text-secondary">{{ $data['student'] }}</h1>
                     </div>
                 </div>
 
                 <div class="col-lg-12 mb-2">
                     <div class="card-body  p-3 d-flex justify-content-between">
                         <div class="d-flex flex-column">
-                            <h4>Records</h4>
-                            <p style="font-size: 12px;">No of records saved.</p>
+                            <h4>Academic records</h4>
+                            <p style="font-size: 12px;">Total No of academic records saved.</p>
                         </div>
-                        <h1 class="fw-bold text-secondary">100</h1>
+                        <h1 class="fw-bold text-secondary">{{ $data['acads'] }}</h1>
                     </div>
                 </div>
 

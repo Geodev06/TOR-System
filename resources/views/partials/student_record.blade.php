@@ -313,9 +313,6 @@
         }
 
     })
-
-
-
     loadAcademicRecords()
 </script>
 <script src="{{ asset('./js/partials/studentrecord.js') }}"></script>

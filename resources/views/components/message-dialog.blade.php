@@ -21,6 +21,9 @@
                     <button class="btn btn-primary btn-sm m-2" id="msgBox-delete-subj" style="display: none;">Confirm</button>
                     <!-- delete student-info -->
                     <button class="btn btn-primary btn-sm m-2" id="msgBox-delete-student-info" style="display: none;">Confirm</button>
+
+                    <!-- delete academic-record -->
+                    <button class="btn btn-primary btn-sm m-2" id="msgBox-delete-acads" style="display: none;">Confirm</button>
                 </div>
             </div>
         </div>
