@@ -126,21 +126,21 @@
                                         <td class="fw-bold text-uppercase">Final rating</td>
                                         <td class="fw-bold text-uppercase">Remarks</td>
                                     </tr>
-
                                     @foreach($record->data as $data)
 
                                     <tr class="f-12">
                                         @foreach($data as $subject => $quarter)
                                         <td>{{$subject}}</td>
-
-                                        @foreach($quarter as $grades)
-
-                                        <td>{{$grades}}</td>
-
+                                        <td> {{ $quarter['quarter_1']}}</td>
+                                        <td> {{ $quarter['quarter_2']}}</td>
+                                        <td> {{ $quarter['quarter_3']}}</td>
+                                        <td>{{ $quarter['quarter_4']}}</td>
+                                        <td> {{ $quarter['final']}}</td>
+                                        <td class="{{ $quarter['remark'] === 'PASSED' ? 'text-info' : 'text-danger'}}"> {{ $quarter['remark']}}</td>
                                         @endforeach
 
                                     </tr>
-                                    @endforeach
+
                                     @endforeach
                                     <tr class="f-12">
                                         <td></td>

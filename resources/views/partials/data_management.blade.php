@@ -268,6 +268,13 @@
 
     })
 
+    $('#table-students tbody').on('click', 'tr .btn-show', function(e) {
+
+        var route = "{{ route('student.show',':lrn') }}"
+        window.open(route.replace(':lrn', $(this)[0].dataset.id))
+
+    })
+
     $('#table-students tbody').on('click', 'tr .btn-delete', function(e) {
 
         $('#msgBox').modal('show')

@@ -25,7 +25,7 @@
                             <p style="font-size: 13px;">Student information management System</p>
                         </div>
                         <div>
-                            <img src="{{ asset('./img/logo_sample.png') }}" alt="logo" height="70px" width="70px">
+                            <img src="{{ asset('./img/logo.png') }}" alt="logo" height="100px" width="100px">
                         </div>
                     </div>
                     <form id="loginForm">

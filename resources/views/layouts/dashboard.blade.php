@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Hugo 0.108.0">
+  <meta name="description" content="TOR keeping system">
+  <meta name="author" content="Agnote ageo">
+  <meta name="generator" content="Bootstrap 0.108.0">
   <title>Dashboard</title>
   <link rel="stylesheet" href="{{ asset('./css/Custom.css')}}" />
   <link rel="stylesheet" href="{{ asset('./css/sidebars.css')}}" />
@@ -66,7 +66,7 @@
   <main class="d-flex flex-nowrap" style="height: 100vh;">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
       <a href="{{ route('dashboard') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <img src="{{ asset('./img/logo_sample.png') }}" alt="logo" height="40px" width="40px">
+        <img src="{{ asset('./img/logo.png') }}" alt="logo" height="40px" width="40px">
         <span class="fs-4 m-4">SJNHS</span>
       </a>
       <hr>

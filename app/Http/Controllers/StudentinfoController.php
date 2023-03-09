@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\OtherStudentinfo;
 use App\Models\Studentinfo;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Validator;
 use Yajra\DataTables\Datatables;
 
@@ -34,12 +36,34 @@ class StudentinfoController extends Controller
                 ->addColumn('action', function ($data) {
                     $btn = '<button class="text-white btn btn-success btn-edit" data-id="' . $data->lrn . '"><i class="bx bx-edit"></i></button>
                      <button class="text-white btn btn-danger btn-delete" data-id="' . $data->lrn . '"><i class="bx bx-trash"></i></button>
-                     <button class="text-white btn btn-dark btn-edit" data-id="' . $data->lrn . '"><i class="bx bx-show"></i></button>';
+                     <button class="text-white btn btn-dark btn-show" data-id="' . $data->lrn . '"><i class="bx bx-show"></i></button>';
 
                     return $btn;
                 })->rawColumns(['action', 'fullname', 'sex'])
                 ->make(true);
         }
+    }
+
+    public function show($lrn)
+    {
+        $student = Studentinfo::where('lrn', $lrn)
+            ->with(['student_record' => function ($query) {
+                $query->orderBy('school_year');
+                $query->orderBy('classified_grade');
+            }, 'otherinfo'])
+            ->get();
+
+        if (count($student) > 0) {
+
+            return view('output.index', compact('student'));
+
+            // $pdf = new Dompdf();
+            // $pdf->loadHtml($view);
+            // $pdf->setPaper('a4', 'portrait');
+            // $pdf->render();
+            // $pdf->stream();
+        }
+        abort(404);
     }
 
     public function store(Request $request)
