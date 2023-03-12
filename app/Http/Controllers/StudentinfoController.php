@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\OtherStudentinfo;
+use App\Models\Record;
 use App\Models\Studentinfo;
-use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Validator;
@@ -56,12 +56,6 @@ class StudentinfoController extends Controller
         if (count($student) > 0) {
 
             return view('output.index', compact('student'));
-
-            // $pdf = new Dompdf();
-            // $pdf->loadHtml($view);
-            // $pdf->setPaper('a4', 'portrait');
-            // $pdf->render();
-            // $pdf->stream();
         }
         abort(404);
     }
@@ -151,8 +145,13 @@ class StudentinfoController extends Controller
         if (!$validator->passes()) {
             return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
         }
-
         try {
+
+
+            $recordlrn = Studentinfo::find($id);
+
+            Record::where('lrn', $recordlrn->lrn)->update(['lrn' => $request->lrn]);
+
             Studentinfo::where('id', $id)
                 ->update([
                     'firstname' => $request->firstname,
@@ -167,6 +166,8 @@ class StudentinfoController extends Controller
                     'gen_ave' => $request->gen_ave,
                     'lrn' => $request->lrn
                 ]);
+
+
 
             return response()->json(['status' => 200, 'msg' => 'Changes has been saved!.']);
         } catch (\Throwable $th) {
@@ -195,10 +196,11 @@ class StudentinfoController extends Controller
 
     public function destroy($lrn)
     {
-        $student = Studentinfo::where('lrn', $lrn)->with('otherinfo')->get();
+        $student = Studentinfo::where('lrn', $lrn)->with(['otherinfo', 'student_record'])->get();
 
 
         $student[0]->otherinfo()->delete();
+        $student[0]->student_record()->delete();
         $student[0]->delete();
 
         return response()->json(['status' => 200, 'msg' => 'Record has been deleted!.']);

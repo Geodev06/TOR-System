@@ -10,10 +10,10 @@
 </style>
 <div class="p-5">
     <div class="d-flex justify-content-between">
-        <h6 class="text-muted ">Data management / Student record / <span class="badge bg-info text-white">{{ $student[0]->lrn }}</span></h6>
+        <h6 class="fw-bold ">Data management / Student record / <span class="badge bg-info text-white">{{ $student[0]->lrn }}</span></h6>
         <span class="bx bx-arrow-back fs-5 text-primary" style="cursor: pointer;" onclick="history.back()"></span>
     </div>
-    <button class="btn btn-success w-auto btn-sm" id="btn-add-record"> <span class="bx bx-plus"></span> Add academic record</button>
+    <button class="btn btn-success text-white w-auto btn-sm" id="btn-add-record"> <span class="bx bx-plus"></span> Add academic record</button>
 </div>
 <div class="container">
     <div class="row" id="academic-content">

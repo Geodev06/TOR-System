@@ -64,7 +64,7 @@
 <body>
 
   <main class="d-flex flex-nowrap" style="height: 100vh;">
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light shadow-lg" style="width: 280px;">
       <a href="{{ route('dashboard') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <img src="{{ asset('./img/logo.png') }}" alt="logo" height="40px" width="40px">
         <span class="fs-4 m-4">SJNHS</span>
@@ -86,7 +86,7 @@
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link link-dark">
+          <a href="{{ route('release') }}" class="nav-link {{ request()->path() === 'release' ? 'active' : 'link-dark' }}">
             <span class="bx bx-printer"></span>
             Release
           </a>
@@ -103,9 +103,7 @@
           </div>
         </a>
         <ul class="dropdown-menu text-small shadow">
-          <li><a class="dropdown-item" href="#">New project...</a></li>
-          <li><a class="dropdown-item" href="#"> <span class="bx bx-cog"></span> Settings</a> </li>
-          <li><a class="dropdown-item" href="#"><span class="bx bx-user-circle"></span> Profile</a></li>
+          <li><a class="dropdown-item {{ Request::is('settings/*') ? 'active' : '' }} " href="{{ route('settings') }}"> <span class="bx bx-cog"></span> Settings</a> </li>
           <li>
             <hr class="dropdown-divider">
           </li>

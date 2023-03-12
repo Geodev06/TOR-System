@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="{{ asset('./css/table.css')}}">
 
 <div class="p-5">
-    <h6 class="text-muted">Data management</h6>
+    <h6 class="fw-bold">Data management</h6>
     <div class="d-flex justify-content-between">
-        <button class="btn btn-success w-auto btn-sm" id="btn-add-student"> <span class="bx bx-plus"></span> Add student</button>
+        <button class="btn btn-primary w-auto btn-sm text-white" id="btn-add-student"> <span class="bx bx-plus"></span> Add student</button>
         <div class="d-flex">
             <a href="{{ route('subject.manage') }}" class="btn btn-primary btn-sm"> <span class="bx bx-book"></span>Manage subjects</a>
         </div>

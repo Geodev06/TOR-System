@@ -50,6 +50,8 @@ class Usercontroller extends Controller
             'lastname' => 'required|regex:/^[a-zA-Z ]+$/u',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
+            'security_question' => 'required',
+            'security_answer' => 'required'
         ]);
 
         if (!$validator->passes()) {
@@ -60,7 +62,9 @@ class Usercontroller extends Controller
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'security_question' => $request->security_question,
+            'security_answer' => $request->security_answer
         ]);
 
         return response()->json(['status' => 200, 'success' => route('login')]);

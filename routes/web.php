@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboardcontroller;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\StudentinfoController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\Usercontroller;
@@ -31,10 +32,20 @@ Route::controller(Dashboardcontroller::class)->group(function () {
 
     Route::get('dashboard', 'index')->name('dashboard');
     Route::post('user/logout', 'logout')->name('logout');
-
     Route::get('data-management', 'dataManagement')->name('data.management');
     Route::get('data-management/subjects', 'subjectManage')->name('subject.manage');
+    Route::get('settings', 'settings')->name('settings');
+    Route::post('settings/basicinfo/update', 'basicInfo')->name('basicinfo.update');
+    Route::post('settings/passwordInfo/update', 'passwordInfo')->name('passwordinfo.update');
+    Route::post('settings/resetInfo/update', 'resetInfo')->name('resetinfo.update');
 });
+
+Route::controller(ReleaseController::class)
+    ->prefix('release')
+    ->group(function () {
+        Route::get('', 'release')->name('release');
+        Route::post('release/store', 'store')->name('release.store');
+    });
 
 Route::controller(SubjectController::class)->group(function () {
     Route::post('subject/add', 'store')->name('subject.store');
@@ -64,5 +75,3 @@ Route::controller(RecordController::class)
         Route::get('student/record-list/{lrn}', 'index')->name('academic_record.show');
         Route::get('student/destroy/{id}', 'destroy')->name('record.destroy');
     });
-
-// Route::resource('data-management/record', RecordController::class)->middleware('auth');

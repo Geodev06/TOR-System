@@ -74,6 +74,32 @@
                                 </div>
                             </div>
 
+                            <hr>
+                            <div class="col-lg-12">
+                                <div class="form-floating mb-3">
+                                    <select name="security_question" id="select-question" class="form-select">
+                                        <option value="">Choose one</option>
+                                        <option value="What is your favorite color?">What is your favorite color?</option>
+                                        <option value="What primary school did you attend?">What primary school did you attend?</option>
+                                        <option value="In what city or town was your first full time job?">In what city or town was your first full time job?</option>
+                                        <option value="What is the middle name of your oldest child?">What is the middle name of your oldest child?</option>
+                                        <option value="What is your spouse or partner's mothers name?">What is your spouse or partner's mothers name?</option>
+                                        <option value="What is the last 5 digits of your phone number?">What is the last 5 digits of your phone number?</option>
+
+                                    </select>
+                                    <label for="select">Security Question</label>
+                                    <span class="error_security_question text-danger error-text"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" autocomplete="off" placeholder="Security answer" name="security_answer" value="" />
+                                    <label for="">Security answer.</label>
+                                    <span class="error_security_answer text-danger error-text"></span>
+                                </div>
+                            </div>
+
                             <div class="col-lg-4">
                                 <button type="submit" class="btn btn-primary w-100 mt-2 text-white" id="btn-submit" />
                                 <span id="btn-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>

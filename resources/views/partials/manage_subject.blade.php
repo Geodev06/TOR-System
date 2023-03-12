@@ -11,10 +11,10 @@
 <div class="p-5">
 
     <div class="d-flex justify-content-between">
-        <h6 class="text-muted ">Data management / Subjects</h6>
+        <h6 class="fw-bold ">Data management / Subjects</h6>
         <span class="bx bx-arrow-back fs-5 text-primary" style="cursor: pointer;" onclick="history.back()"></span>
     </div>
-    <button class="btn btn-success w-auto btn-sm" id="btn-add-subject"> <span class="bx bx-plus"></span> Add subject</button>
+    <button class="btn btn-primary text-white w-auto btn-sm" id="btn-add-subject"> <span class="bx bx-plus"></span> Add subject</button>
 </div>
 <div class="container">
     <div class="row">

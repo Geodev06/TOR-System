@@ -10,7 +10,7 @@
 </style>
 <div class="p-5">
     <div class="d-flex justify-content-between">
-        <h6 class="text-muted ">Data management / Acamemic record / <span class="badge bg-info text-white">{{ $student[0]->lrn }}</span></h6>
+        <h6 class="fw-bold ">Data management / Acamemic record / <span class="badge bg-info text-white">{{ $student[0]->lrn }}</span></h6>
         <span class="bx bx-arrow-back fs-5 text-primary" style="cursor: pointer;" onclick="history.back()"></span>
     </div>
 
